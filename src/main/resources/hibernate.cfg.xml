@@ -1,0 +1,37 @@
+<hibernate-configuration>
+    <session-factory>
+        <!-- Database connection settings -->
+        <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/twitter_db</property>
+        <property name="hibernate.connection.username">meatyjava</property>
+        <property name="hibernate.connection.password">SC458edy66CU7pH3hQy#</property>
+
+        <!-- HikariCP settings -->
+        <property name="hibernate.connection.provider_class">org.hibernate.hikaricp.internal.HikariCPConnectionProvider</property>
+        <property name="hibernate.hikari.dataSource.url">jdbc:mysql://localhost:3306/twitter_db</property>
+        <property name="hibernate.hikari.dataSource.user">meatyjava</property>
+        <property name="hibernate.hikari.dataSource.password">SC458edy66CU7pH3hQy#</property>
+        <property name="hibernate.hikari.maximumPoolSize">20</property>
+        <property name="hibernate.hikari.minimumIdle">5</property>
+        <property name="hibernate.hikari.idleTimeout">30000</property>
+        <property name="hibernate.hikari.poolName">HikariCP</property>
+        <property name="hibernate.hikari.maxLifetime">1800000</property>
+        <property name="hibernate.hikari.connectionTimeout">30000</property>
+
+        <!-- Specify dialect -->
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQL8Dialect</property>
+
+        <!-- Enable Hibernate's automatic session context management -->
+        <property name="hibernate.current_session_context_class">thread</property>
+
+        <!-- Echo all executed SQL to stdout -->
+        <property name="hibernate.show_sql">false</property>
+
+        <!-- Drop and re-create the database schema on startup -->
+        <property name="hibernate.hbm2ddl.auto">update</property>
+
+        <!-- Mention annotated class -->
+        <mapping class="meaty.models.User"/>
+        <mapping class="meaty.models.Post"/>
+    </session-factory>
+</hibernate-configuration>
