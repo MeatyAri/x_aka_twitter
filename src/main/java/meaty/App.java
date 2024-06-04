@@ -10,8 +10,6 @@ import org.hibernate.cfg.Configuration;
 
 
 public class App {
-    private static final int port = 12345;
-
     public static void main(String[] args) {
         // Create SessionFactory
         SessionFactory factory = new Configuration()
@@ -20,7 +18,7 @@ public class App {
                 .addAnnotatedClass(Post.class)
                 .buildSessionFactory();
 
-        AsyncSocketManager server = new AsyncSocketManager(port);
+        AsyncSocketManager server = new AsyncSocketManager(5000);
         try {
             server.startServer();
         } catch (IOException e) {
