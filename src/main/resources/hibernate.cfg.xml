@@ -31,7 +31,7 @@
         <property name="hibernate.hbm2ddl.auto">update</property>
 
         <!-- Mention annotated class -->
-        <mapping class="meaty.models.User"/>
-        <mapping class="meaty.models.Post"/>
+        <mapping class="meaty.db.models.User"/>
+        <mapping class="meaty.db.models.Post"/>
     </session-factory>
 </hibernate-configuration>

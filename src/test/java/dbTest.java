@@ -1,20 +1,16 @@
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
-
-import meaty.models.Post;
-import meaty.models.User;
 
 import java.util.Date;
 
+import meaty.db.HibernateUtil;
+import meaty.db.models.Post;
+import meaty.db.models.User;
+
+
 public class dbTest {
     public static void main(String[] args) {
-        // Create SessionFactory
-        SessionFactory factory = new Configuration()
-                .configure("hibernate.cfg.xml")
-                .addAnnotatedClass(User.class)
-                .addAnnotatedClass(Post.class)
-                .buildSessionFactory();
+        SessionFactory factory = HibernateUtil.getSessionFactory();
 
         // Create Session
         Session session = factory.getCurrentSession();

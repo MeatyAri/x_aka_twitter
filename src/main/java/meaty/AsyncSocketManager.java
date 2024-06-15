@@ -8,7 +8,10 @@ import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
+// import com.google.gson.JsonObject;
+
+import meaty.auth.Auth;
+import meaty.protocol.*;
 
 
 public class AsyncSocketManager {
@@ -16,11 +19,19 @@ public class AsyncSocketManager {
     private Selector selector;
     private ServerSocketChannel serverSocketChannel;
     private final int port;
+    private boolean DEBUG;
 
     private static final Gson gson = new Gson();
 
+
+    public AsyncSocketManager(int port, boolean DEBUG) {
+        this.port = port;
+        this.DEBUG = DEBUG;
+    }
+
     public AsyncSocketManager(int port) {
         this.port = port;
+        this.DEBUG = false;
     }
 
     public void startServer() throws IOException {
@@ -67,7 +78,7 @@ public class AsyncSocketManager {
         System.out.println("Accepted new connection from " + clientChannel.getRemoteAddress());
     }
 
-    private static void handleRead(SelectionKey key) throws IOException {
+    private void handleRead(SelectionKey key) throws IOException {
         SocketChannel socketChannel = (SocketChannel) key.channel();
         ByteBuffer lengthBuffer = (ByteBuffer) key.attachment();
 
@@ -91,7 +102,9 @@ public class AsyncSocketManager {
                 if (!messageBuffer.hasRemaining()) {
                     messageBuffer.flip();
                     String message = StandardCharsets.UTF_8.decode(messageBuffer).toString();
-                    System.out.println("Received: " + message);
+                    if (DEBUG) {
+                        System.out.println("Received: " + message);
+                    }
                     String response = handleRequest(message);
                     sendMessage(socketChannel, response);
                     lengthBuffer.clear();
@@ -102,31 +115,31 @@ public class AsyncSocketManager {
 
     private static String handleRequest(String message) {
         Request request = gson.fromJson(message, Request.class);
-        String response;
+        Response response;
+
         switch (request.getType()) {
             case LOGIN:
-                response = handleAuth(request.getData());
+                response = Auth.login(request.getData());
                 break;
-            case POST:
-                response = handlePost(request.getData());
+            case SIGNUP:
+                response = Auth.signup(request.getData());
                 break;
+            // case POST:
+            //     response = handlePost(request.getData());
+            //     break;
             default:
-                response = "Unknown request type";
+                response = error404();
+                break;
         }
-        return response;
+
+        response.setId(request.getId());
+        return gson.toJson(response);
     }
 
-    private static String handleAuth(JsonObject data) {
-        String username = data.get("username").getAsString();
-        String password = data.get("password").getAsString();
-        // Handle authentication (e.g., check credentials)
-        return "Authentication successful for user: " + username;
-    }
-
-    private static String handlePost(JsonObject data) {
-        String content = data.get("content").getAsString();
-        // Handle post (e.g., store in database)
-        return "Post received: " + content;
+    private static Response error404() {
+        Response error = new Response();
+        error.setStatus(404);
+        return error;
     }
 
     private static void sendMessage(SocketChannel socketChannel, String message) throws IOException {
@@ -136,18 +149,5 @@ public class AsyncSocketManager {
         buffer.put(messageBytes);
         buffer.flip();
         socketChannel.write(buffer);
-    }
-
-    private static class Request {
-        private RequestType type;
-        private JsonObject data;
-
-        public RequestType getType() {
-            return type;
-        }
-
-        public JsonObject getData() {
-            return data;
-        }
     }
 }

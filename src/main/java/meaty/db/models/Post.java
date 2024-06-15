@@ -1,4 +1,4 @@
-package meaty.models;
+package meaty.db.models;
 
 import javax.persistence.*;
 import java.util.Date;

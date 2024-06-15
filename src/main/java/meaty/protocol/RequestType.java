@@ -1,7 +1,7 @@
-package meaty;
+package meaty.protocol;
 
 public enum RequestType {
     LOGIN,
     SIGNUP,
-    POST
+    TWEET
 }

@@ -1,4 +1,4 @@
-package meaty.models;
+package meaty.db.models;
 
 import javax.persistence.*;
 
@@ -16,8 +16,11 @@ public class User {
     @Column(nullable = false, unique = true, length = 30)
     private String username;
 
-    @Column(nullable = false, length = 30)
+    @Column(nullable = false, length = 60)
     private String password;
+
+    @Column(nullable = true, unique = true, length = 30)
+    private String token;
 
     @Column(nullable = true, unique = true, length = 30)
     private String email;
@@ -58,6 +61,14 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
     public String getEmail() {
