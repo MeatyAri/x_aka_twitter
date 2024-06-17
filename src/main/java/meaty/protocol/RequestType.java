@@ -3,5 +3,8 @@ package meaty.protocol;
 public enum RequestType {
     LOGIN,
     SIGNUP,
-    TWEET
+    CREATE_TWEET,
+    GET_TWEETS,
+    LIKE_UNLIKE_TWEET,
+    SAVE_UNSAVE_TWEET
 }

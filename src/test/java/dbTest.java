@@ -4,16 +4,15 @@ import org.hibernate.SessionFactory;
 import java.util.Date;
 
 import meaty.db.HibernateUtil;
-import meaty.db.models.Post;
-import meaty.db.models.User;
-
+import meaty.db.models.*;
+import meaty.db.types.*;
 
 public class dbTest {
     public static void main(String[] args) {
         SessionFactory factory = HibernateUtil.getSessionFactory();
 
         // Create Session
-        Session session = factory.getCurrentSession();
+        Session session = factory.openSession();
 
         try {
             // Create a user object
@@ -22,27 +21,34 @@ public class dbTest {
             tempUser.setPassword("password123");
             tempUser.setBirthDate(new Date());
 
-            // Create a post object
-            Post tempPost = new Post();
-            tempPost.setContent("Hello, world!");
-            tempPost.setUser(tempUser);
+            // Create a tweet object
+            Tweet tempTweet = new Tweet();
+            tempTweet.setContent("Hello, world!");
+            tempTweet.setUser(tempUser);
+
+            LikesSaves likesSaves = new LikesSaves();
+            likesSaves.setUser(tempUser);
+            likesSaves.setTweet(tempTweet);
+            likesSaves.setType(LikesSavesType.LIKE);
 
             // Start a transaction
             session.beginTransaction();
 
-            // Save the user and post
+            // Save the user and tweet
             session.save(tempUser);
-            session.save(tempPost);
+            session.save(tempTweet);
+            session.save(likesSaves);
 
             // Commit transaction
             session.getTransaction().commit();
+            session.close();
 
         } catch (Exception e) {
             e.printStackTrace();
             session.getTransaction().rollback();
         }
 
-        session = factory.getCurrentSession();
+        session = factory.openSession();
         try {            
             try {
                 Thread.sleep(500);
@@ -57,13 +63,14 @@ public class dbTest {
                 .setParameter("username", "john_doe")
                 .uniqueResult();
 
-            // get the post back
-            Post post = user.getPosts().iterator().next();
+            // // get the tweet back
+            // Tweet tweet = user.getTweets().iterator().next();
 
             // Delete both objects
             session.delete(user);
-            session.delete(post);
+            // session.delete(tweet);
             session.getTransaction().commit();
+            session.close();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -73,3 +80,4 @@ public class dbTest {
         }
     }
 }
+

@@ -32,6 +32,7 @@
 
         <!-- Mention annotated class -->
         <mapping class="meaty.db.models.User"/>
-        <mapping class="meaty.db.models.Post"/>
+        <mapping class="meaty.db.models.Tweet"/>
+        <mapping class="meaty.db.models.LikesSaves"/>
     </session-factory>
 </hibernate-configuration>

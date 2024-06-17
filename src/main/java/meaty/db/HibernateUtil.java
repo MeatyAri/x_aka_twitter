@@ -3,8 +3,7 @@ package meaty.db;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
-import meaty.db.models.Post;
-import meaty.db.models.User;
+import meaty.db.models.*;
 
 public class HibernateUtil {
 
@@ -15,7 +14,7 @@ public class HibernateUtil {
             sessionFactory = new Configuration()
                 .configure("hibernate.cfg.xml")
                 .addAnnotatedClass(User.class)
-                .addAnnotatedClass(Post.class)
+                .addAnnotatedClass(Tweet.class)
                 .buildSessionFactory();
         } catch (Throwable ex) {
             throw new ExceptionInInitializerError(ex);

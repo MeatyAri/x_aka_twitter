@@ -2,10 +2,11 @@ package meaty.db.models;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.Set;
 
 @Entity
-@Table(name = "posts")
-public class Post {
+@Table(name = "tweets")
+public class Tweet {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,11 +19,17 @@ public class Post {
     @Column(nullable = false)
     private Date createdAt;
 
+    @Column(nullable = false)
+    private long likes;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    public Post() {
+    @OneToMany(mappedBy = "tweet", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private Set<LikesSaves> likesSaves;
+
+    public Tweet() {
         createdAt = new Date();
     }
 
@@ -51,11 +58,27 @@ public class Post {
         this.createdAt = createdAt;
     }
 
+    public long getLikes() {
+        return likes;
+    }
+
+    public void setLikes(long likes) {
+        this.likes = likes;
+    }
+
     public User getUser() {
         return user;
     }
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Set<LikesSaves> getLikesSaves() {
+        return likesSaves;
+    }
+
+    public void setLikesSaves(Set<LikesSaves> likesSaves) {
+        this.likesSaves = likesSaves;
     }
 }

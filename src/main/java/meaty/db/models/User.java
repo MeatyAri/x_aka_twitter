@@ -35,8 +35,11 @@ public class User {
     @Column(nullable = true, length = 500)
     private String bio;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<Post> posts;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private Set<Tweet> tweets;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private Set<LikesSaves> likesSaves;
 
     // Getters and Setters
     public Long getId() {
@@ -103,11 +106,11 @@ public class User {
         this.bio = bio;
     }
 
-    public Set<Post> getPosts() {
-        return posts;
+    public Set<Tweet> getTweets() {
+        return tweets;
     }
 
-    public void setPosts(Set<Post> posts) {
-        this.posts = posts;
+    public void setTweets(Set<Tweet> tweets) {
+        this.tweets = tweets;
     }
 }

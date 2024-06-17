@@ -11,6 +11,7 @@ import com.google.gson.Gson;
 // import com.google.gson.JsonObject;
 
 import meaty.auth.Auth;
+import meaty.tweets.TweetHandler;
 import meaty.protocol.*;
 
 
@@ -124,9 +125,18 @@ public class AsyncSocketManager {
             case SIGNUP:
                 response = Auth.signup(request.getData());
                 break;
-            // case POST:
-            //     response = handlePost(request.getData());
-            //     break;
+            case CREATE_TWEET:
+                response = TweetHandler.createTweet(request.getData());
+                break;
+            case GET_TWEETS:
+                response = TweetHandler.getTweets(request.getData());
+                break;
+            case LIKE_UNLIKE_TWEET:
+                response = TweetHandler.likeUnlikeTweet(request.getData());
+                break;
+            case SAVE_UNSAVE_TWEET:
+                response = TweetHandler.saveUnsaveTweet(request.getData());
+                break;
             default:
                 response = error404();
                 break;
