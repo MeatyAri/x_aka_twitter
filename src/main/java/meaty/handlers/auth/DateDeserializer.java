@@ -1,4 +1,4 @@
-package meaty.auth;
+package meaty.handlers.auth;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;

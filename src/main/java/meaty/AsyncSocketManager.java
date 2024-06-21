@@ -10,8 +10,9 @@ import java.util.Iterator;
 import com.google.gson.Gson;
 // import com.google.gson.JsonObject;
 
-import meaty.auth.Auth;
-import meaty.tweets.TweetHandler;
+import meaty.handlers.auth.Auth;
+import meaty.handlers.profile.ProfileHandler;
+import meaty.handlers.tweets.TweetHandler;
 import meaty.protocol.*;
 
 
@@ -136,6 +137,15 @@ public class AsyncSocketManager {
                 break;
             case SAVE_UNSAVE_TWEET:
                 response = TweetHandler.saveUnsaveTweet(request.getData());
+                break;
+            case GET_PROFILE:
+                response = ProfileHandler.getProfile(request.getData());
+                break;
+            case FOLLOW:
+                response = ProfileHandler.follow(request.getData());
+                break;
+            case UNFOLLOW:
+                response = ProfileHandler.unfollow(request.getData());
                 break;
             default:
                 response = error404();

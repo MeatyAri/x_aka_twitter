@@ -34,5 +34,6 @@
         <mapping class="meaty.db.models.User"/>
         <mapping class="meaty.db.models.Tweet"/>
         <mapping class="meaty.db.models.LikesSaves"/>
+        <mapping class="meaty.db.models.Follows"/>
     </session-factory>
 </hibernate-configuration>

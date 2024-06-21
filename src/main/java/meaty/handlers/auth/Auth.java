@@ -1,4 +1,4 @@
-package meaty.auth;
+package meaty.handlers.auth;
 
 import java.util.Date;
 import java.util.Base64;
@@ -35,7 +35,6 @@ public class Auth {
             User user = getUserByToken(user_to_check.getToken());
 
             if (user == null || !user.getToken().equals(user_to_check.getToken())) {
-                System.out.println("User token: " + user_to_check.getToken() + " user_to_check token: " + user_to_check.getToken());
                 response.setStatus(401);
                 JsonObject respData = new JsonObject();
                 respData.addProperty("content", "Invalid token");
@@ -121,13 +120,17 @@ public class Auth {
 
     public static User getUserByUsername(String username) {
         Session session = factory.openSession();
+        User user = getUserByUsername(session, username);
+        session.close();
+        return user;
+    }
 
+    public static User getUserByUsername(Session session, String username) {
         try {
             // get the user by username
             User user = (User) session.createQuery("FROM User U WHERE U.username = :username")
                 .setParameter("username", username)
                 .uniqueResult();
-            session.close();
 
             return user;
 
@@ -139,13 +142,17 @@ public class Auth {
 
     public static User getUserByToken(String token) {
         Session session = factory.openSession();
+        User user = getUserByToken(session, token);
+        session.close();
+        return user;
+    }
 
+    public static User getUserByToken(Session session, String token) {
         try {
             // get the user by token
             User user = (User) session.createQuery("FROM User U WHERE U.token = :token")
                 .setParameter("token", token)
                 .uniqueResult();
-            session.close();
 
             return user;
 

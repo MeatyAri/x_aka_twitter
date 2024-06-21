@@ -28,18 +28,27 @@ public class User {
     @Column(nullable = true, unique = true, length = 15)
     private String phone;
 
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     @Column(nullable = false)
     private Date birthDate;
 
     @Column(nullable = true, length = 500)
     private String bio;
 
+    @Column(nullable = false)
+    private long followers;
+
+    @Column(nullable = false)
+    private long following;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private Set<Tweet> tweets;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private Set<LikesSaves> likesSaves;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private Set<Follows> follows;
 
     // Getters and Setters
     public Long getId() {
@@ -106,11 +115,35 @@ public class User {
         this.bio = bio;
     }
 
+    public long getFollowersCount() {
+        return followers;
+    }
+
+    public void setFollowersCount(long followers) {
+        this.followers = followers;
+    }
+
+    public long getFollowingCount() {
+        return following;
+    }
+
+    public void setFollowingCount(long following) {
+        this.following = following;
+    }
+
     public Set<Tweet> getTweets() {
         return tweets;
     }
 
     public void setTweets(Set<Tweet> tweets) {
         this.tweets = tweets;
+    }
+
+    public Set<Follows> getFollows() {
+        return follows;
+    }
+
+    public void setFollows(Set<Follows> follows) {
+        this.follows = follows;
     }
 }
